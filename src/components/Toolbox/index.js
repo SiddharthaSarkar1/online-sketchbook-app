@@ -3,7 +3,7 @@ import { COLORS } from "@/constants";
 import styles from "./index.module.css";
 
 const ToolBox = () => {
-  const activeMenuItem = useSelector((state) => state.menu.activeMenuItem);
+    const activeMenuItem = useSelector((state) => state.menu.activeMenuItem);
 
   const updateBrushSize = (e) => {};
 
@@ -40,7 +40,7 @@ const ToolBox = () => {
       </div>
 
       <div className={styles.toolItem}>
-        <h4 className={styles.toolText}>Brush Size</h4>
+        <h4 className={styles.toolText}>Brush Size {activeMenuItem}</h4>
         <div className={styles.itemContainer}>
           <input
             className="w-72"
