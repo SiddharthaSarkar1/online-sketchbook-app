@@ -13,6 +13,25 @@ const Board = () => {
   const { activeMenuItem, actionMenuItem } = useSelector((state) => state.menu);
   const { color, size } = useSelector((state) => state.toolbox[activeMenuItem]);
 
+  const drawGrid = (context, width, height) => {
+    const gridSize = 20; // Size of each grid cell
+    context.strokeStyle = "#e0e0e0"; // Light gray color for grid lines
+
+    for (let x = 0; x <= width; x += gridSize) {
+      context.beginPath();
+      context.moveTo(x, 0);
+      context.lineTo(x, height);
+      context.stroke();
+    }
+
+    for (let y = 0; y <= height; y += gridSize) {
+      context.beginPath();
+      context.moveTo(0, y);
+      context.lineTo(width, y);
+      context.stroke();
+    }
+  };
+
   useEffect(() => {
     if (!canvasRef.current) return;
     const canvas = canvasRef.current;
@@ -28,7 +47,6 @@ const Board = () => {
       actionMenuItem === MENU_ITEMS.UNDO ||
       actionMenuItem === MENU_ITEMS.REDO
     ) {
-      //For undo we are always showing the 0th one
       if (historyPointer.current > 0 && actionMenuItem === MENU_ITEMS.UNDO)
         historyPointer.current -= 1;
       if (
@@ -67,13 +85,11 @@ const Board = () => {
 
   }, [color, size]);
 
-  // Mount
   useLayoutEffect(() => {
     if (!canvasRef.current) return;
     const canvas = canvasRef.current;
     const context = canvas.getContext("2d");
 
-    // When mounting
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -114,6 +130,8 @@ const Board = () => {
       drawLine(path.x, path.y);
     };
 
+    drawGrid(context, canvas.width, canvas.height);
+
     canvas.addEventListener("mousedown", handleMouseDown);
     canvas.addEventListener("mousemove", handleMouseMove);
     canvas.addEventListener("mouseup", handleMouseUp);
@@ -131,7 +149,9 @@ const Board = () => {
     };
   }, []);
 
-  return <canvas ref={canvasRef}></canvas>;
+  return (
+    <canvas ref={canvasRef} className="overflow-hidden"></canvas>
+  );
 };
 
 export default Board;

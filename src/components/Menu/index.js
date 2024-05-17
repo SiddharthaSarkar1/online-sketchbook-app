@@ -7,6 +7,7 @@ import {
   faRotateRight,
   faFileArrowDown,
 } from "@fortawesome/free-solid-svg-icons";
+import { motion } from "framer-motion";
 
 import cx from "classnames";
 import styles from "./index.module.css";
@@ -14,7 +15,7 @@ import { MENU_ITEMS } from "@/constants";
 import { actionItemClick, menuItemClick } from "@/slice/menuSlice";
 import ToolTip from "../Tooltip";
 
-const Menu = () => {
+const Menu = ({reference}) => {
   const dispatch = useDispatch();
   const activeMenuItem = useSelector((state) => state.menu.activeMenuItem);
   const handleMenuClick = (itemName) => {
@@ -26,6 +27,13 @@ const Menu = () => {
   };
 
   return (
+    <motion.div
+      drag
+      dragConstraints={reference}
+      whileDrag={{ scale: 1.1 }}
+      dragElastic={0.2}
+      dragTransition={{ bounceStiffness: 200, bounceDamping: 30 }}
+    >
     <div className={styles.menuContainer}>
       <div
         className={cx(styles.iconWrapper, {
@@ -72,6 +80,7 @@ const Menu = () => {
         </ToolTip>
       </div>
     </div>
+    </motion.div>
   );
 };
 
